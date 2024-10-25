@@ -1,8 +1,8 @@
 import { useState, FormEvent } from "react";
-import ReactMarkdown from "react-markdown";
 import "./App.css";
 import { UploadForm } from "./components/UploadForm";
 import { Summary } from "./components/Summary";
+import { ErrorMessage } from "./components/ErrorMessage";
 
 interface SummaryResponse {
   selected_lines: string[];
@@ -60,7 +60,7 @@ function App() {
         loading={loading}
       />
 
-      {error && <div className="error">{error}</div>}
+      <ErrorMessage message={error} />
 
       <Summary lines={summary} />
     </div>

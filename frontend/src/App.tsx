@@ -2,6 +2,7 @@ import { useState, FormEvent } from "react";
 import ReactMarkdown from "react-markdown";
 import "./App.css";
 import { UploadForm } from "./components/UploadForm";
+import { Summary } from "./components/Summary";
 
 interface SummaryResponse {
   selected_lines: string[];
@@ -61,16 +62,7 @@ function App() {
 
       {error && <div className="error">{error}</div>}
 
-      {summary.length > 0 && (
-        <div className="results">
-          <h2>Summary</h2>
-          <div className="markdown-content">
-            {summary.map((line, index) => (
-              <ReactMarkdown key={index}>{line}</ReactMarkdown>
-            ))}
-          </div>
-        </div>
-      )}
+      <Summary lines={summary} />
     </div>
   );
 }

@@ -1,12 +1,9 @@
 import { useState, FormEvent } from "react";
-import "./App.css";
 import { UploadForm } from "./components/UploadForm";
 import { Summary } from "./components/Summary";
 import { ErrorMessage } from "./components/ErrorMessage";
-
-interface SummaryResponse {
-  selected_lines: string[];
-}
+import { submitMarkdownFile } from "./services/api";
+import "./App.css";
 
 function App() {
   const [file, setFile] = useState<File | null>(null);
@@ -25,22 +22,9 @@ function App() {
     setLoading(true);
     setError("");
 
-    const formData = new FormData();
-    formData.append("file", file);
-    formData.append("question", question);
-
     try {
-      const response = await fetch("http://localhost:8000/summarize", {
-        method: "POST",
-        body: formData,
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to get summary");
-      }
-
-      const data: SummaryResponse = await response.json();
-      setSummary(data.selected_lines);
+      const lines = await submitMarkdownFile(file, question);
+      setSummary(lines);
     } catch (err) {
       setError(err instanceof Error ? err.message : "An error occurred");
     } finally {
@@ -61,7 +45,6 @@ function App() {
       />
 
       <ErrorMessage message={error} />
-
       <Summary lines={summary} />
     </div>
   );

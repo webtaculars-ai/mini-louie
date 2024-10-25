@@ -40,4 +40,4 @@ async def summarize_file(file: UploadFile, question: str = Form()):
 
 @app.get("/")
 async def read_root():
-    return {"message": "Hello, world!"}
+    return {"message": "Hello from Mini Louie.AI!"}

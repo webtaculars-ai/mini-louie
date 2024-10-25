@@ -8,3 +8,5 @@ services:
     volumes:
       - ./server:/app/server
       - ./data:/app/data
+    environment:
+      - PORT=8888

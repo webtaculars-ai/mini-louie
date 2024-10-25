@@ -10,7 +10,7 @@ export async function submitMarkdownFile(
   formData.append("file", file);
   formData.append("question", question);
 
-  const response = await fetch("http://localhost:8000/summarize", {
+  const response = await fetch("http://localhost:8888/summarize", {
     method: "POST",
     body: formData,
   });

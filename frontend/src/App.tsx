@@ -1,6 +1,7 @@
 import { useState, FormEvent } from "react";
 import ReactMarkdown from "react-markdown";
 import "./App.css";
+import { UploadForm } from "./components/UploadForm";
 
 interface SummaryResponse {
   selected_lines: string[];
@@ -50,34 +51,13 @@ function App() {
     <div className="container">
       <h1>Mini Louie.AI</h1>
 
-      <form onSubmit={handleSubmit} className="form">
-        <div className="form-group">
-          <label htmlFor="file">Upload Markdown File:</label>
-          <input
-            type="file"
-            id="file"
-            accept=".md"
-            onChange={(e) => setFile(e.target.files?.[0] || null)}
-            required
-          />
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="question">Your Question:</label>
-          <input
-            type="text"
-            id="question"
-            value={question}
-            onChange={(e) => setQuestion(e.target.value)}
-            placeholder="Enter your question..."
-            required
-          />
-        </div>
-
-        <button type="submit" className="submit-button" disabled={loading}>
-          {loading ? "Processing..." : "Get Summary"}
-        </button>
-      </form>
+      <UploadForm
+        onSubmit={handleSubmit}
+        setFile={setFile}
+        question={question}
+        setQuestion={setQuestion}
+        loading={loading}
+      />
 
       {error && <div className="error">{error}</div>}
 

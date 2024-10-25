@@ -15,6 +15,8 @@ export function UploadForm({
   setQuestion,
   loading,
 }: UploadFormProps) {
+  const isSubmitDisabled = loading || !question.trim();
+
   return (
     <form onSubmit={onSubmit} className="form">
       <div className="form-group">
@@ -40,7 +42,11 @@ export function UploadForm({
         />
       </div>
 
-      <button type="submit" className="submit-button" disabled={loading}>
+      <button
+        type="submit"
+        className="submit-button"
+        disabled={isSubmitDisabled}
+      >
         {loading ? "Processing..." : "Get Summary"}
       </button>
     </form>

@@ -7,31 +7,45 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
+      - uses: actions/checkout@v2
 
-    - name: Set up Python
-      uses: actions/setup-python@v2
-      with:
-        python-version: '3.9'
+      - name: Build and test backend container
+        run: |
+          docker build -f python.Dockerfile -t mini-louie-backend .
+          docker run -d -p 8888:8888 --name backend mini-louie-backend
+          sleep 5  # Wait for container to start
 
-    - name: Build and test backend
-      run: |
-        echo "TODO"
-        ls
+          # Test the endpoint
+          response=$(curl -s http://localhost:8888/)
+          expected='{"message":"Hello from Mini Louie.AI!"}'
+
+          if [ "$response" != "$expected" ]; then
+            echo "Endpoint test failed!"
+            echo "Expected: $expected"
+            echo "Got: $response"
+            exit 1
+          fi
+
+          echo "Backend endpoint test passed!"
 
   frontend:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
+      - uses: actions/checkout@v2
 
-    - name: Set up Node.js
-      uses: actions/setup-node@v2
-      with:
-        node-version: '14'
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: "18"
 
-    - name: Install frontend dependencies
-      run: |
-        echo "TODO"
-        cd frontend
-        ls
+      - name: Install and build frontend
+        run: |
+          cd frontend
+          npm ci
+          npm run build
+
+      - name: Run frontend linting
+        run: |
+          cd frontend
+          npm run lint
